@@ -29,19 +29,19 @@ const router = express.Router()
  *         description: Filtra los mensajes que contienen el texto especificado en el campo 'like'.
  *       - name: via
  *         in: query
- *         required: true
+ *         required: false
  *         schema:
  *           type: string
  *         description: Filtra los mensajes enviados a través del canal o método especificado.
  *       - name: origin
  *         in: query
- *         required: true
+ *         required: false
  *         schema:
  *           type: string
  *         description: ID del usuario que envía el mensaje.
  *       - name: receptor
  *         in: query
- *         required: true
+ *         required: false
  *         schema:
  *           type: string
  *         description: ID del usuario que recibe el mensaje.
@@ -178,23 +178,29 @@ router.post('/message', postMessages)
 
 /**
  * @openapi
- * /api/v1/message/{messageId}:
+ * /api/v1/message:
  *   delete:
  *     summary: Eliminar un mensaje
  *     description: Elimina un mensaje específico basado en el ID del mensaje y devuelve un objeto de respuesta con el estado de la operación y el ID del mensaje eliminado.
  *     parameters:
  *       - name: messageId
- *         in: path
+ *         in: query
  *         required: true
  *         schema:
  *           type: integer
  *         description: ID del mensaje que se desea eliminar.
- *       - name: userId
- *         in: query
- *         required: true
- *         schema:
- *           type: string
- *         description: ID del usuario que solicita la eliminación del mensaje.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: string
+ *                 description: ID del usuario que solicita la eliminación del mensaje.
+ *             required:
+ *               - userId
  *     responses:
  *       '200':
  *         description: Mensaje eliminado con éxito.
