@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package andisbank.mensajeria;
+
+enum via {
+  whatsapp = 1;
+  email = 2;
+}
+
+message MessageRequest {
+  string userId = 1;
+  string receptor = 2;
+}
+
+message MessageResponse {
+  string userId = 1; // userId
+  string message = 2; // El contenido del mensaje
+  string receptor = 3; // Receptor del mensaje
+  via via = 4; // Objeto via
+}
+
+message DeleteMessageResponse {
+  bool deleted = 1;
+}
+
+service Message {
+  rpc GetMessage(MessageRequest) returns (MessageResponse);
+  rpc SendMessage(MessageRequest) returns (MessageResponse);
+  rpc DeleteMessage(MessageRequest) returns (DeleteMessageResponse);
+}
