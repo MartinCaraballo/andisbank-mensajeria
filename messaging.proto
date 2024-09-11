@@ -2,21 +2,34 @@ syntax = "proto3";
 
 package andisbank.mensajeria;
 
-enum via {
-  whatsapp = 1;
-  email = 2;
+enum Via {
+  WHATSAPP = 0;
+  EMAIL = 1;
 }
 
-message MessageRequest {
+message SendMessageRequest {
+  string userId = 1;
+  string receptor = 2;
+  string message = 3;
+  int32 messageId = 4;
+  Via contactVia = 5;
+}
+
+message GetMessageRequest {
   string userId = 1;
   string receptor = 2;
 }
 
+message DeleteMessageRequest {
+  int32 messageId = 1;
+}
+
 message MessageResponse {
   string userId = 1; // userId
-  string message = 2; // El contenido del mensaje
-  string receptor = 3; // Receptor del mensaje
-  via via = 4; // Objeto via
+  string receptor = 2; // Receptor del mensaje
+  string message = 3; // El contenido del mensaje
+  int32 messageId = 4;
+  Via contactVia = 5; // Objeto via
 }
 
 message DeleteMessageResponse {
@@ -24,7 +37,7 @@ message DeleteMessageResponse {
 }
 
 service Message {
-  rpc GetMessage(MessageRequest) returns (MessageResponse);
-  rpc SendMessage(MessageRequest) returns (MessageResponse);
-  rpc DeleteMessage(MessageRequest) returns (DeleteMessageResponse);
+  rpc GetMessage(GetMessageRequest) returns (MessageResponse);
+  rpc SendMessage(SendMessageRequest) returns (MessageResponse);
+  rpc DeleteMessage(DeleteMessageRequest) returns (DeleteMessageResponse);
 }
